@@ -10,29 +10,28 @@
 
         <div class="form-group">
             <label for="title" class="form-label">Title</label>
-            <input type="text" id="title" name="title" class="form-control @error('title') is-invalid @enderror">
+            <input type="text" id="title" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') ?? $proge->title }}">
             @error('title')
                 <div class="alert alert-danger">{{$message}}</div>
             @enderror
         </div>
         <div class="form-group">
             <label for="description" class="form-label">Description</label>
-            <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" cols="50" rows="10"></textarea>
+            <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" cols="50" rows="10">{{ old('description') ?? $proge->description }}</textarea>
             @error('description')
                 <div class="alert alert-danger">{{$message}}</div>
             @enderror
         </div>
         <div class="form-group">
             <label for="fileimg" class="form-label">file immagine</label>
-            <input class="form-control" type="file" id="fileimg" name="img">
+            <input class="form-control" type="file" id="fileimg" name="img" value="{{ old('img') ?? $proge->img }}">
         </div>
         <div class="input-group mb-3 my-3">
-            <label class="input-group-text" for="typeselect">Type</label>
-            <select class="form-select form-control @error('description') is-invalid @enderror" name="type" id="typeselect" value="">
-                <option selected>Choose...</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+            <label class="input-group-text" for="typeselect">Genere</label>
+            <select class="form-select form-control @error('description') is-invalid @enderror" name="genere_id" id="typeselect">
+                @foreach($progeGenere as $elem)
+                    <option value="{{$elem->id}}" {{old('genere_id', $proge->genere_id) == $elem->id ? 'selected' : ''}}>{{$elem->name}}</option>
+                @endforeach
             </select>
             @error('description')
                 <div class="alert alert-danger">{{$message}}</div>

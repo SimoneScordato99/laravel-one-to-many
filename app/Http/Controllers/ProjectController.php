@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Project;
+use App\Models\Genere;
 
 class ProjectController extends Controller
 {
@@ -27,7 +28,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('admin.create');
+        $genere = Genere::All();
+        return view('admin.create', compact('genere'));
     }
 
     /**
@@ -40,11 +42,10 @@ class ProjectController extends Controller
     {
         $request->validate(
             [
+                'genere_id' => 'required',
                 'title' => 'required|max:255',
-                'description' => 'required|min:10',
+                'description' => 'required|min:5',
                 'thumb'=>'nullable',
-                'type'=>'required'
-     
             ],
             [
                 'title.required' => 'è richiesto di compilare il campo title',
@@ -63,7 +64,7 @@ class ProjectController extends Controller
         }
         
 
-
+        
         $newPost = new Project();
         $newPost->fill($form_data);
 
@@ -93,8 +94,9 @@ class ProjectController extends Controller
      */
     public function edit($id)
     {
+        $progeGenere = Genere::All();
         $proge = Project::find($id);
-        return view('admin.edit', compact('proge'));
+        return view('admin.edit', compact('proge', 'progeGenere'));
     }
 
     /**
@@ -111,7 +113,6 @@ class ProjectController extends Controller
                 'title' => 'required|max:255',
                 'description' => 'required|min:10',
                 'thumb'=>'nullable',
-                'type'=>'required'
      
             ],
             [
@@ -125,11 +126,14 @@ class ProjectController extends Controller
         );
 
         $form_data = $request->all();
+        $proge = Project::find($id);
         if ($request->hasFile('img')){
+            if($proge->img){
+                Storage::delete($proge->img);
+            }
             $img_path = Storage::disk('public')->put('uploads', $request['img'] );
             $form_data['img'] = $img_path;
         }
-        $proge = Project::find($id);
         $proge->update($form_data);
 
         return redirect()->route('admin.index');

@@ -11,9 +11,13 @@ class Project extends Model
     protected $table='projects';
 
     protected $fillable=[
+        "genere_id",
         "title",
         "description",
         "type",
         "img",
     ];
+    public function genere(){
+        return $this->belongsTo(Genere::class);
+    }
 }

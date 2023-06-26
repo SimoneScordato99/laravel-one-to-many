@@ -26,17 +26,17 @@
             <input class="form-control" type="file" id="fileimg" name="img">
         </div>
         <div class="input-group mb-3 my-3">
-            <label class="input-group-text" for="typeselect">Type</label>
-            <select class="form-select form-control @error('description') is-invalid @enderror" name="type" id="typeselect" value="">
-                <option selected>Choose...</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+            <label class="input-group-text" for="typeselect">Genere</label>
+            <select class="form-select form-control @error('description') is-invalid @enderror" name="genere_id" id="typeselect">
+                @foreach($genere as $elem)
+                    <option value="{{$elem->id}}">{{$elem->name}}</option>
+                @endforeach
             </select>
             @error('description')
                 <div class="alert alert-danger">{{$message}}</div>
             @enderror
         </div>
+
     
         <button type="submit" class="btn btn-primary">Crea post</button>
     </form>
